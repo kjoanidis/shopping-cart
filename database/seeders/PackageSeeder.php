@@ -16,7 +16,7 @@ class PackageSeeder extends Seeder
      */
     public function run(): void
     {
-        $skuPackage = PackageSku::factory()->create([
+        $skuPackage = Package::factory()->create([
             'name' => 'Clothing Package',
         ]);
 

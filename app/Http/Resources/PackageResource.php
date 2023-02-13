@@ -20,9 +20,9 @@ class PackageResource extends JsonResource
             'name' => $this->name,
             'price' => $this->price,
             'skus' => $this->skus,
-            'quantity' => $this->whenPivotLoaded('package_sku', function () {
-                return $this->pivot->quantity;
-            }),
+//            'quantity' => $this->whenPivotLoaded('package_sku', function () {
+//                return $this->pivot->quantity;
+//            }),
         ];
     }
 }

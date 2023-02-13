@@ -20,7 +20,7 @@ class Sku extends Model
         'name'
     ];
 
-    protected $with = ['packageSkus', 'package'];
+    protected $with = ['packageSkus'];
 
     protected $appends = ['is_package'];
 
@@ -34,7 +34,7 @@ class Sku extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function packages(): BelongsToMany
+    public function packageSkus(): BelongsToMany
     {
         return $this->belongsToMany(Package::class)->using(PackageSku::class)->withPivot('quantity');
     }
