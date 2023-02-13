@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\Attribute;
 use App\Models\Package;
-use App\Models\Product;
+use App\Models\PackageSku;
 use App\Models\Sku;
 use Illuminate\Database\Seeder;
 
@@ -17,14 +16,16 @@ class PackageSeeder extends Seeder
      */
     public function run(): void
     {
-        $skuPackage = Sku::factory()->create([
+        $skuPackage = PackageSku::factory()->create([
             'name' => 'Clothing Package',
         ]);
+
+        Sku::factory()->create();
 
         $skuItems = Sku::inRandomOrder()->limit(2)->get();
 
         foreach ($skuItems as $skuItem) {
-            Package::create([
+            PackageSku::create([
                 'package_id' => $skuPackage->id,
                 'sku_id' => $skuItem->id,
                 'quantity' => 2
