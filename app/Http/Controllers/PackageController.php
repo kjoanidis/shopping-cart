@@ -4,33 +4,27 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ProductCollection;
-use App\Http\Resources\PackageCollection;
 use App\Http\Resources\PackageResource;
-use App\Models\Product;
 use App\Models\Package;
-use App\Models\Sku;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class PackageController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): PackageCollection
+    public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return new PackageCollection(Package::all());
+        return PackageResource::collection(Package::with('skus')->get());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param Sku $package
+     * @param Package $package
      * @return PackageResource
      */
-    public function show(Sku $package): PackageResource
+    public function show(Package $package): PackageResource
     {
-        return new PackageResource($package);
+        return new PackageResource($package->load('skus'));
     }
 }

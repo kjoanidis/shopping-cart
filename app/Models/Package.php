@@ -6,7 +6,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Package extends Model
@@ -14,18 +16,14 @@ class Package extends Model
     use HasFactory;
 
     protected $fillable = [
-        'quantity',
-        'package_id',
-        'sku_id'
+        'name',
+        'price',
     ];
 
-    public function sku(): HasOne
+    public function skus(): BelongsToMany
     {
-        return $this->hasOne(Sku::class, 'id', 'package_id');
-    }
-
-    public function skus(): HasMany
-    {
-        return $this->hasMany(Sku::class, 'id', 'sku_id');
+        return $this->belongsToMany(Sku::class)
+            ->using(PackageSku::class)
+            ->withPivot('quantity');
     }
 }

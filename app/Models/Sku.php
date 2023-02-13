@@ -34,21 +34,9 @@ class Sku extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function packageSkus(): HasManyThrough
+    public function packages(): BelongsToMany
     {
-        return $this->hasManyThrough(
-            self::class,
-            Package::class,
-            'package_id',
-            $this->primaryKey,
-            $this->primaryKey,
-            'sku_id'
-        );
-    }
-
-    public function package()
-    {
-        return $this->belongsTo(Package::class);
+        return $this->belongsToMany(Package::class)->using(PackageSku::class)->withPivot('quantity');
     }
 
     public function getIsPackageAttribute(): bool

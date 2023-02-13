@@ -19,7 +19,7 @@ class PackageResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'price' => $this->price,
-            'skus' => $this->packageSkus,
+            'skus' => $this->skus,
         ];
     }
 }

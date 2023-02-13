@@ -15,8 +15,6 @@ class SkuResource extends JsonResource
      */
     public function toArray($request): array
     {
-        dd($this->package);
-
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -27,6 +25,7 @@ class SkuResource extends JsonResource
             'value' => $this->whenPivotLoaded('attribute_sku', function () {
                 return $this->pivot->value;
             }),
+            'packages' => $this->packages,
         ];
     }
 }
