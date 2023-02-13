@@ -18,8 +18,9 @@ class PackageSeeder extends Seeder
     public function run(): void
     {
         $skuPackage = Sku::factory()->create([
-            'name' => 'Clothing Package'
+            'name' => 'Clothing Package',
         ]);
+
         $skuItems = Sku::inRandomOrder()->limit(2)->get();
 
         foreach ($skuItems as $skuItem) {

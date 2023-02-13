@@ -4,25 +4,28 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Models\Category;
 use App\Models\Customer;
+use App\Models\Package;
 use App\Models\Sku;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @extends Factory<Customer>
  */
-class PackageFactory extends Factory
+class PackageSkuFactory extends Factory
 {
     /**
      * Define the model's default state.
      */
     public function definition(): array
     {
+        $parent = Package::factory()->create();
+        $child = Sku::factory()->create();
+
         return [
-            'name' => fake()->name(),
-            'price' => $this->faker->randomFloat(2, 20, 100),
+            'package_id' => $parent->id,
+            'sku_id' => $child->id,
+            'quantity' => fake()->numberBetween(1, 10)
         ];
     }
 }
