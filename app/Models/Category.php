@@ -13,6 +13,8 @@ class Category extends Model
     use HasFactory;
 
     public const CLOTHING = 1;
+    public const HEALTH_AND_BEAUTY = 2;
+    public const SUBSCRIPTIONS = 3;
 
     protected $fillable = [
         'name',

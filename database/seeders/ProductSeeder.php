@@ -28,6 +28,18 @@ class ProductSeeder extends Seeder
                 'category_id' => Category::CLOTHING,
                 'name' => 'Trousers'
             ],
+            [
+                'category_id' => Category::SUBSCRIPTIONS,
+                'name' => 'Clothing monthly plan'
+            ],
+            [
+                'category_id' => Category::SUBSCRIPTIONS,
+                'name' => 'Health & beauty monthly plan'
+            ],
+            [
+                'category_id' => Category::SUBSCRIPTIONS,
+                'name' => 'Onboarding fee'
+            ],
         ]);
     }
 }

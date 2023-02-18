@@ -57,5 +57,20 @@ class SkuSeeder extends Seeder
                 ->skus()
                 ->attach($sku->id, ['value' => $skuName['size_name']]);
         }
+
+        Sku::factory()->create([
+            'product_id' => Product::where('id', Product::CLOTHING_MONTHLY_PLAN)->first()->id,
+            'name' => 'Clothing monthly plan'
+        ]);
+
+        Sku::factory()->create([
+            'product_id' => Product::where('id', Product::HEALTH_AND_BEAUTY_MONTHLY_PLAN)->first()->id,
+            'name' => 'Health & beauty monthly plan'
+        ]);
+
+        Sku::factory()->create([
+            'product_id' => Product::where('id', Product::ONBOARDING_FEE)->first()->id,
+            'name' => 'Onboarding fee'
+        ]);
     }
 }

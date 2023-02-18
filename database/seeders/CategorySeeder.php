@@ -19,6 +19,16 @@ class CategorySeeder extends Seeder
                 'id' => Category::CLOTHING,
                 'name' => 'Clothing',
                 'description' => ''
+            ],
+            [
+                'id' => Category::HEALTH_AND_BEAUTY,
+                'name' => 'Health & Beauty',
+                'description' => ''
+            ],
+            [
+                'id' => Category::SUBSCRIPTIONS,
+                'name' => 'Subscriptions',
+                'description' => ''
             ]
         ]);
 

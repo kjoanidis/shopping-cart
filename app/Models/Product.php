@@ -13,6 +13,13 @@ class Product extends Model
 {
     use HasFactory;
 
+    public const T_SHIRT = 1;
+    public const JUMPER = 2;
+    public const TROUSERS = 3;
+    public const CLOTHING_MONTHLY_PLAN = 4;
+    public const HEALTH_AND_BEAUTY_MONTHLY_PLAN = 5;
+    public const ONBOARDING_FEE = 6;
+
     protected $fillable = [
         'category_id',
         'name',
