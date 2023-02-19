@@ -1,10 +1,10 @@
 import {createRouter, createWebHistory } from "vue-router";
 import Home from "../Pages/Home.vue";
-import About from "../Pages/About.vue"
 import ProductShow from "../Pages/Product/Show.vue"
 import CartEdit from "../Pages/Cart/Edit.vue"
 import CategoryShow from "../Pages/Category/Show.vue"
 import OrderCreate from "../Pages/Order/Create.vue"
+import OrderShow from "../Pages/Order/Create.vue"
 
 const routes = [
     {
@@ -13,29 +13,29 @@ const routes = [
         component: Home,
     },
     {
-        path: "/about",
-        name: "about",
-        component: About,
-    },
-    {
         path: "/cart",
         name: "cart",
         component: CartEdit,
     },
     {
-        path: "/product",
-        name: "product",
+        path: "/product/:slug",
+        name: "product.show",
         component: ProductShow,
     },
     {
-        path: "/category",
-        name: "category",
+        path: "/category/:slug",
+        name: "category.show",
         component: CategoryShow,
     },
     {
-        path: "/order",
-        name: "order",
+        path: "/checkout",
+        name: "order.create",
         component: OrderCreate,
+    },
+    {
+        path: "/confirmation",
+        name: "order.show",
+        component: OrderShow,
     },
 ];
 

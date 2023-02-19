@@ -18,28 +18,45 @@ class ProductSeeder extends Seeder
         Product::insert([
             [
                 'category_id' => Category::CLOTHING,
-                'name' => 'T-Shirt'
+                'name' => 'T-Shirt',
+                'slug' => 't-shirt',
+                'description' => $this->paragraph()
             ],
             [
                 'category_id' => Category::CLOTHING,
-                'name' => 'Jumper'
+                'name' => 'Jumper',
+                'slug' => 'jumper',
+                'description' => $this->paragraph()
             ],
             [
                 'category_id' => Category::CLOTHING,
-                'name' => 'Trousers'
+                'name' => 'Trousers',
+                'slug' => 'trousers',
+                'description' => $this->paragraph()
             ],
             [
                 'category_id' => Category::SUBSCRIPTIONS,
-                'name' => 'Clothing monthly plan'
+                'name' => 'Clothing monthly plan',
+                'slug' => 'clothing-monthly-plan',
+                'description' => $this->paragraph()
             ],
             [
                 'category_id' => Category::SUBSCRIPTIONS,
-                'name' => 'Health & beauty monthly plan'
+                'name' => 'Health & beauty monthly plan',
+                'slug' => 'health-&-beauty-monthly-plan',
+                'description' => $this->paragraph()
             ],
             [
                 'category_id' => Category::SUBSCRIPTIONS,
-                'name' => 'Onboarding fee'
+                'name' => 'Onboarding fee',
+                'slug' => 'onboarding-fee',
+                'description' => $this->paragraph()
             ],
         ]);
+    }
+
+    private function paragraph()
+    {
+        return 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque finibus mollis vehicula. Suspendisse sollicitudin vitae orci eget cursus. Nullam ut blandit lectus. Vivamus rutrum, dui sed pulvinar interdum, tellus nunc blandit nulla, eu tempor ante massa vel eros. Phasellus finibus rhoncus mi. In sollicitudin finibus ante ut vehicula. Cras faucibus lobortis erat. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam lectus odio, posuere sit amet lorem mollis, placerat vestibulum libero. Morbi aliquet eu est in posuere. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Curabitur blandit augue ut metus interdum pulvinar. In facilisis posuere tortor et laoreet. Nulla efficitur blandit diam, porttitor posuere ante eleifend eget. Proin et molestie ipsum, sit amet mollis magna. Praesent elementum sit amet eros quis malesuada.';
     }
 }

@@ -1,5 +1,5 @@
 <template>
-    <main class="mx-auto max-w-7xl sm:px-6 sm:pt-16 lg:px-8">
+    <main v-if="product" class="mx-auto max-w-7xl sm:px-6 sm:pt-16 lg:px-8">
         <div class="mx-auto max-w-2xl lg:max-w-none">
             <!-- Product -->
             <div class="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
@@ -33,7 +33,7 @@
 
                 <!-- Product info -->
                 <div class="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
-                    <h1 class="text-3xl font-bold tracking-tight text-gray-900">Zip Tote Basket</h1>
+                    <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ product.name }}</h1>
 
                     <div class="mt-3">
                         <h2 class="sr-only">Product information</h2>
@@ -74,11 +74,14 @@
                         <h3 class="sr-only">Description</h3>
 
                         <div class="space-y-6 text-base text-gray-700">
-                            <p>The Zip Tote Basket is the perfect midpoint between shopping tote and comfy backpack. With convertible straps, you can hand carry, should sling, or backpack this convenient and spacious bag. The zip top and durable canvas construction keeps your goods protected for all-day use.</p>
+                            <p>{{ product.description }}</p>
                         </div>
                     </div>
 
-                    <form class="mt-6">
+                    <form
+                        @submit.prevent
+                        class="mt-6"
+                    >
                         <!-- Colors -->
                         <div>
                             <h3 class="text-sm text-gray-600">Color</h3>
@@ -120,7 +123,10 @@
                         </div>
 
                         <div class="mt-10 flex">
-                            <button type="submit" class="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full">Add to bag</button>
+                            <button
+                                @click="store.addToCart({ item: product })"
+                                class="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
+                            >Add to cart</button>
 
                             <button type="button" class="ml-4 flex items-center justify-center rounded-md py-3 px-3 text-gray-400 hover:bg-gray-100 hover:text-gray-500">
                                 <svg class="h-6 w-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -142,15 +148,15 @@
                                         <!-- Open: "text-indigo-600", Closed: "text-gray-900" -->
                                         <span class="text-gray-900 text-sm font-medium">Features</span>
                                         <span class="ml-6 flex items-center">
-                      <!-- Open: "hidden", Closed: "block" -->
-                      <svg class="block h-6 w-6 text-gray-400 group-hover:text-gray-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                      </svg>
-                                            <!-- Open: "block", Closed: "hidden" -->
-                      <svg class="hidden h-6 w-6 text-indigo-400 group-hover:text-indigo-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
-                      </svg>
-                    </span>
+                                          <!-- Open: "hidden", Closed: "block" -->
+                                          <svg class="block h-6 w-6 text-gray-400 group-hover:text-gray-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                          </svg>
+                                                                <!-- Open: "block", Closed: "hidden" -->
+                                          <svg class="hidden h-6 w-6 text-indigo-400 group-hover:text-indigo-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
+                                          </svg>
+                                        </span>
                                     </button>
                                 </h3>
                                 <div class="prose prose-sm pb-6" id="disclosure-1">
@@ -258,7 +264,6 @@
                             <a href="#" class="relative flex items-center justify-center rounded-md border border-transparent bg-gray-100 py-2 px-8 text-sm font-medium text-gray-900 hover:bg-gray-200">Add to bag<span class="sr-only">, High Wall Tote</span></a>
                         </div>
                     </div>
-
                 </div>
             </section>
         </div>
@@ -266,6 +271,15 @@
 </template>
 
 <script setup>
+import {useCartStore} from "../../Store/cart";
+import {computed, onMounted} from "vue";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+const store = useCartStore();
+const product = computed(() => {
+    return store.products.find(product => product.slug === route.params.slug);
+});
 </script>
 
 <style scoped>

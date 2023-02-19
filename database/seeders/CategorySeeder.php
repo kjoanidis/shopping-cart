@@ -18,16 +18,19 @@ class CategorySeeder extends Seeder
             [
                 'id' => Category::CLOTHING,
                 'name' => 'Clothing',
+                'slug' => 'clothing',
                 'description' => ''
             ],
             [
                 'id' => Category::HEALTH_AND_BEAUTY,
                 'name' => 'Health & Beauty',
+                'slug' => 'health-&-beauty',
                 'description' => ''
             ],
             [
                 'id' => Category::SUBSCRIPTIONS,
                 'name' => 'Subscriptions',
+                'slug' => 'subscriptions',
                 'description' => ''
             ]
         ]);

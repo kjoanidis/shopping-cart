@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class PackageSku extends Pivot
+class OrderSku extends Pivot
 {
     use HasFactory;
 
@@ -16,7 +16,7 @@ class PackageSku extends Pivot
 
     protected $fillable = [
         'sku_id',
-        'package_id',
+        'order_id',
         'quantity'
     ];
 
@@ -25,8 +25,8 @@ class PackageSku extends Pivot
         return $this->belongsTo(Sku::class);
     }
 
-    public function package(): BelongsTo
+    public function order(): BelongsTo
     {
-        return $this->belongsTo(Package::class);
+        return $this->belongsTo(Order::class);
     }
 }

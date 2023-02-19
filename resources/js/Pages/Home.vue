@@ -51,7 +51,7 @@
         </div>
 
         <!-- Trending products -->
-        <section aria-labelledby="trending-heading" class="bg-white">
+        <section aria-labelledby="trending-heading" class="bg-white" v-if="products.length">
             <div class="py-16 sm:py-24 lg:mx-auto lg:max-w-7xl lg:py-32 lg:px-8">
                 <div class="flex items-center justify-between px-4 sm:px-6 lg:px-0">
                     <h2 id="trending-heading" class="text-2xl font-bold tracking-tight text-gray-900">Trending products</h2>
@@ -65,8 +65,13 @@
                     <div class="relative w-full overflow-x-auto">
                         <ul role="list" class="mx-4 inline-flex space-x-8 sm:mx-6 lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-x-8 lg:space-x-0">
 
-                            <li class="inline-flex w-64 flex-col text-center lg:w-auto">
-                                <router-link to="/product">
+                            <li v-for="product in products.slice(0, 4)"
+                                :key="product.id"
+                                class="inline-flex w-64 flex-col text-center lg:w-auto"
+                            >
+                                <router-link
+                                    :to="{name: 'product.show', params: {slug: product.slug}}"
+                                >
                                     <div class="group relative">
                                         <div class="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200">
                                             <img src="https://tailwindui.com/img/ecommerce-images/home-page-02-product-01.jpg" alt="Black machined steel pen with hexagonal grip and small white logo at top." class="h-full w-full object-cover object-center group-hover:opacity-75">
@@ -76,7 +81,7 @@
                                             <h3 class="mt-1 font-semibold text-gray-900">
                                                 <a href="#">
                                                     <span class="absolute inset-0"></span>
-                                                    Machined Pen
+                                                    {{product.name}}
                                                 </a>
                                             </h3>
                                             <p class="mt-1 text-gray-900">$35</p>
@@ -101,108 +106,6 @@
 
                                 </ul>
                             </li>
-
-                            <li class="inline-flex w-64 flex-col text-center lg:w-auto">
-                                <div class="group relative">
-                                    <div class="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200">
-                                        <img src="https://tailwindui.com/img/ecommerce-images/home-page-02-product-02.jpg" alt="Black porcelain mug with modern square handle and natural clay accents on rim and bottom." class="h-full w-full object-cover object-center group-hover:opacity-75">
-                                    </div>
-                                    <div class="mt-6">
-                                        <p class="text-sm text-gray-500">Matte Black</p>
-                                        <h3 class="mt-1 font-semibold text-gray-900">
-                                            <a href="#">
-                                                <span class="absolute inset-0"></span>
-                                                Earthen Mug
-                                            </a>
-                                        </h3>
-                                        <p class="mt-1 text-gray-900">$28</p>
-                                    </div>
-                                </div>
-
-                                <h4 class="sr-only">Available colors</h4>
-                                <ul role="list" class="mt-auto flex items-center justify-center space-x-3 pt-6">
-
-                                    <li class="h-4 w-4 rounded-full border border-black border-opacity-10" style="background-color:#4B5563">
-                                        <span class="sr-only"> Matte Black </span>
-                                    </li>
-
-                                    <li class="h-4 w-4 rounded-full border border-black border-opacity-10" style="background-color:#FEF3C7">
-                                        <span class="sr-only"> Natural </span>
-                                    </li>
-
-                                </ul>
-                            </li>
-
-                            <li class="inline-flex w-64 flex-col text-center lg:w-auto">
-                                <div class="group relative">
-                                    <div class="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200">
-                                        <img src="https://tailwindui.com/img/ecommerce-images/home-page-02-product-03.jpg" alt="Natural leather journal with brass disc binding and three paper refill sets." class="h-full w-full object-cover object-center group-hover:opacity-75">
-                                    </div>
-                                    <div class="mt-6">
-                                        <p class="text-sm text-gray-500">Natural</p>
-                                        <h3 class="mt-1 font-semibold text-gray-900">
-                                            <a href="#">
-                                                <span class="absolute inset-0"></span>
-                                                Leatherbound Daily Journal Set
-                                            </a>
-                                        </h3>
-                                        <p class="mt-1 text-gray-900">$50</p>
-                                    </div>
-                                </div>
-
-                                <h4 class="sr-only">Available colors</h4>
-                                <ul role="list" class="mt-auto flex items-center justify-center space-x-3 pt-6">
-
-                                    <li class="h-4 w-4 rounded-full border border-black border-opacity-10" style="background-color:#FEF3C7">
-                                        <span class="sr-only"> Natural </span>
-                                    </li>
-
-                                    <li class="h-4 w-4 rounded-full border border-black border-opacity-10" style="background-color:#1F2937">
-                                        <span class="sr-only"> Black </span>
-                                    </li>
-
-                                    <li class="h-4 w-4 rounded-full border border-black border-opacity-10" style="background-color:#7C2D12">
-                                        <span class="sr-only"> Brown </span>
-                                    </li>
-
-                                </ul>
-                            </li>
-
-                            <li class="inline-flex w-64 flex-col text-center lg:w-auto">
-                                <div class="group relative">
-                                    <div class="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200">
-                                        <img src="https://tailwindui.com/img/ecommerce-images/home-page-02-product-04.jpg" alt="Black leather journal with brass disc binding." class="h-full w-full object-cover object-center group-hover:opacity-75">
-                                    </div>
-                                    <div class="mt-6">
-                                        <p class="text-sm text-gray-500">Black</p>
-                                        <h3 class="mt-1 font-semibold text-gray-900">
-                                            <a href="#">
-                                                <span class="absolute inset-0"></span>
-                                                Leatherbound Daily Journal
-                                            </a>
-                                        </h3>
-                                        <p class="mt-1 text-gray-900">$50</p>
-                                    </div>
-                                </div>
-
-                                <h4 class="sr-only">Available colors</h4>
-                                <ul role="list" class="mt-auto flex items-center justify-center space-x-3 pt-6">
-
-                                    <li class="h-4 w-4 rounded-full border border-black border-opacity-10" style="background-color:#111827">
-                                        <span class="sr-only"> Black </span>
-                                    </li>
-
-                                    <li class="h-4 w-4 rounded-full border border-black border-opacity-10" style="background-color:#7C2D12">
-                                        <span class="sr-only"> Brown </span>
-                                    </li>
-
-                                    <li class="h-4 w-4 rounded-full border border-black border-opacity-10" style="background-color:#FEF3C7">
-                                        <span class="sr-only"> Natural </span>
-                                    </li>
-
-                                </ul>
-                            </li>
-
                         </ul>
                     </div>
                 </div>
@@ -329,7 +232,13 @@
 </template>
 
 <script setup>
+import {useCartStore} from "../Store/cart";
+import { computed } from "vue";
+const store = useCartStore();
 
+const products = computed(() => {
+    return store.products;
+});
 </script>
 
 <style scoped>

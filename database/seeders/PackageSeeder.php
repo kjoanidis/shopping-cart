@@ -18,6 +18,7 @@ class PackageSeeder extends Seeder
     {
         $package = Package::factory()->create([
             'name' => 'Clothing Package',
+            'slug' => 'clothing-package'
         ]);
 
         $skus = Sku::inRandomOrder()->limit(2)->get();

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Cashier\Billable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -17,6 +18,7 @@ class User extends Authenticatable
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
+    use Billable;
 
     /**
      * The attributes that are mass assignable.
@@ -54,5 +56,10 @@ class User extends Authenticatable
             get: fn ($value) => $value,
             set: fn ($value) => Hash::make($value),
         );
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }

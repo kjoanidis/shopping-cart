@@ -5,6 +5,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\SkuController;
@@ -20,6 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('login', [AuthController::class, 'store']);
 Route::apiResource('category', CategoryController::class)->only(['index', 'show']);
 Route::apiResource('customer', CustomerController::class)->only(['store']);
+Route::apiResource('payment', PaymentController::class)->only(['store']);
 Route::apiResource('opportunity', OpportunityController::class)->only(['store']);
 Route::apiResource('package', PackageController::class)->only(['index', 'show']);
 Route::apiResource('product', ProductController::class)->only(['index', 'show']);
