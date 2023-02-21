@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Sku;
 use App\Models\Order;
+use App\Models\OrderSku;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -30,6 +31,20 @@ class PaymentController extends Controller
         try {
 
             $products = json_decode($request->input('cart'), true);
+            $shipping_amount = $request->input('delivery_method') === "Standard" ? 500 : 1600;
+
+              // Transaction History
+              $order_recoard = [
+                'user_id' => $user->id,
+                'total' => $request->input('total_amount'),
+                'last_four' => $user->pm_last_four,
+                'card_type' => ucwords($user->pm_type),
+            ];
+
+            $order = new Order();
+            $order_id = $order->create($order_recoard)->id;
+
+
 
 
             foreach($products as $key => $product) {
@@ -63,24 +78,45 @@ class PaymentController extends Controller
 
 
                 // Transaction History
-                $purchase_record = [
-                    'transaction_id' => $payment_id,
-                    'user_id' => $user->id,
+                $order_sku_record = [
+                    'payment_id' => $payment_id,//transaction_id
+                    'order_id' => $order_id,
                     'sku_id' => $product['id'],
-                    'total' => $item->price * $quantity,
-                    'price' => $item->price,
                     'quantity' => $quantity,
                     'status' => 'Success',
                     'last_four' => $user->pm_last_four,
                     'card_type' => ucwords($user->pm_type),
                 ];
 
-                $order = new Order();
-                $order->create($purchase_record);
-
-                return response()->json(['message' => "success"], 200);
+                $order = new OrderSku();
+                $order->create($order_sku_record);
 
             }
+
+
+            // Shipping amount
+            $payment = $user->charge(
+                $shipping_amount,
+                $request->input('payment_method_id')
+            );
+            $payment_id = $payment->id;
+
+              // Transaction History
+              $order_sku_record = [
+                'payment_id' => $payment_id,
+                'order_id' => $order_id,
+                'sku_id' => 0,
+                'quantity' => $quantity,
+                'status' => 'Success',
+                'last_four' => $user->pm_last_four,
+                'card_type' => ucwords($user->pm_type),
+            ];
+
+            $order = new OrderSku();
+            $order->create($order_sku_record);
+
+
+            return response()->json(['message' => "success"], 200);
 
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);

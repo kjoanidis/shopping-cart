@@ -12,11 +12,13 @@ class OrderSku extends Pivot
 {
     use HasFactory;
 
-    protected $table = 'package_sku';
+    protected $table = 'order_sku';
 
     protected $fillable = [
         'sku_id',
         'order_id',
+        'payment_id',
+        'status',
         'quantity'
     ];
 

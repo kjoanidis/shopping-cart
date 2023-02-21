@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->string('card_type');
-            $table->string('last_four');
+        Schema::table('order_sku', function (Blueprint $table) {
+            $table->string('payment_id');
+            $table->string('status');
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('orders', function (Blueprint $table) {
+        Schema::table('order_sku', function (Blueprint $table) {
             //
         });
     }
