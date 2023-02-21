@@ -296,19 +296,19 @@
                         <dl class="space-y-6 border-t border-gray-200 py-6 px-4 sm:px-6">
                             <div class="flex items-center justify-between">
                                 <dt class="text-sm">Subtotal</dt>
-                                <dd class="text-sm font-medium text-gray-900">$64.00</dd>
+                                <dd class="text-sm font-medium text-gray-900">${{ subTotal }}</dd>
                             </div>
                             <div class="flex items-center justify-between">
                                 <dt class="text-sm">Shipping</dt>
-                                <dd class="text-sm font-medium text-gray-900">$5.00</dd>
+                                <dd class="text-sm font-medium text-gray-900">${{ shipping_estimate }}</dd>
                             </div>
                             <div class="flex items-center justify-between">
                                 <dt class="text-sm">Taxes</dt>
-                                <dd class="text-sm font-medium text-gray-900">$5.52</dd>
+                                <dd class="text-sm font-medium text-gray-900">${{ tax_estimate }}</dd>
                             </div>
                             <div class="flex items-center justify-between border-t border-gray-200 pt-6">
                                 <dt class="text-base font-medium">Total</dt>
-                                <dd class="text-base font-medium text-gray-900">$75.52</dd>
+                                <dd class="text-base font-medium text-gray-900">${{ orderTotal }}</dd>
                             </div>
                         </dl>
 
@@ -333,12 +333,31 @@ import { loadStripe } from '@stripe/stripe-js';
 import {reactive, onMounted, computed} from "vue";
 import { useCartStore } from "../../Store/cart";
 import axios from "axios";
+import router from "../../Router/index";
 
 const store = useCartStore();
 
 const cartItems = computed(() => {
     return store.getCartContents;
 });
+
+const subTotal = computed(() => {
+    return  store.getCartContents.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2);
+
+});
+const tax_estimate = computed(() => {
+    return  (subTotal.value  * 0.1).toFixed(2);
+
+});
+
+const shipping_estimate = computed(() => {
+    return  (5).toFixed(2);
+});
+
+const orderTotal = computed(() => {
+    return (Number(subTotal.value) + Number(tax_estimate.value) + Number(shipping_estimate.value)).toFixed(2);
+});
+
 
 const cartItemOptions = [1, 2, 3, 4, 5, 6, 7, 8];
 
@@ -368,6 +387,12 @@ const formData = reactive({
 });
 
 onMounted(async () => {
+
+    if(!cartItems.value.length) {
+        router.push("/cart");
+        return;
+    }
+
     localState.stripe = await loadStripe(import.meta.env.VITE_STRIPE_KEY);
     const stripeElements = localState.stripe.elements();
     localState.cardElement = stripeElements.create("card", {
@@ -380,6 +405,7 @@ onMounted(async () => {
 });
 
 const processPayment = async () => {
+
     store.updateCustomer(formData);
     localState.paymentProcessing = true;
 
@@ -417,21 +443,18 @@ const processPayment = async () => {
         return;
     }
 
-    // const stripeAmount = store.getCartTotal * 100;
-    const stripeAmount = 10000;
-
     const finalCustomerDetails = {
         ...store.getCustomer,
         cart: JSON.stringify(store.getCartContents),
-        amount: stripeAmount,
         payment_method_id: paymentMethod.id,
     };
 
     axios
         .post("/api/payment", finalCustomerDetails)
         .then((response) => {
+            console.log(response);
             if (response.statusText === "Created") {
-                localState.paymentIsProcessing = false;
+                localState.paymentProcessing = false;
                 store.clearCart();
                 store.clearCustomer();
                 store.updateOrder(paymentMethod.id);
@@ -439,7 +462,7 @@ const processPayment = async () => {
             }
         })
         .catch((error) => {
-            localState.paymentIsProcessing = false;
+            localState.paymentProcessing = false;
             localState.orderError = error;
             alert(error);
         });
