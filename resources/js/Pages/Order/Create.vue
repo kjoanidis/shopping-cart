@@ -176,13 +176,12 @@
 
                     <!-- Delivery -->
                     <div class="mt-10 border-t border-gray-200 pt-10">
-                        <fieldset x-data="window.Components.radioGroup({ initialCheckedIndex: 0 })" x-init="init()">
+                        <fieldset>
                             <legend class="text-lg font-medium text-gray-900">Delivery method</legend>
 
                             <div class="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
 
-                                <label x-radio-group-option="" class="relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none border-transparent undefined" x-description="Checked: &quot;border-transparent&quot;, Not Checked: &quot;border-gray-300&quot;	Active: &quot;ring-2 ring-indigo-500&quot;" :class="{ 'border-transparent': (value === 'Standard'), 'border-gray-300': !(value === 'Standard'), 'ring-2 ring-indigo-500': (active === 'Standard'), 'undefined': !(active === 'Standard') }">
-                                    <input type="radio" x-model="value" name="delivery-method" value="Standard" class="sr-only" aria-labelledby="delivery-method-0-label" aria-describedby="delivery-method-0-description-0 delivery-method-0-description-1">
+                                <label class="relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none border-gray-300 undefined" @click="deliveryMethod = 'Standard'">
                                     <span class="flex flex-1">
                                         <span class="flex flex-col">
                                           <span id="delivery-method-0-label" class="block text-sm font-medium text-gray-900">Standard</span>
@@ -190,14 +189,13 @@
                                           <span id="delivery-method-0-description-1" class="mt-6 text-sm font-medium text-gray-900">$5.00</span>
                                         </span>
                                       </span>
-                                    <svg class="h-5 w-5 text-indigo-600 undefined" x-description="Not Checked: &quot;hidden&quot;" :class="{ 'hidden': !(value === 'Standard'), 'undefined': (value === 'Standard') }" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <svg class="h-5 w-5 text-indigo-600" :class="{ 'hidden': !(deliveryMethod === 'Standard'), 'undefined': (deliveryMethod === 'Standard') }" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"></path>
                                     </svg>
-                                    <span class="pointer-events-none absolute -inset-px rounded-lg border-2 border-indigo-500" aria-hidden="true" x-description="Active: &quot;border&quot;, Not Active: &quot;border-2&quot;	Checked: &quot;border-indigo-500&quot;, Not Checked: &quot;border-transparent&quot;" :class="{ 'border': (active === 'Standard'), 'border-2': !(active === 'Standard'), 'border-indigo-500': (value === 'Standard'), 'border-transparent': !(value === 'Standard') }"></span>
+                                    <span class="pointer-events-none absolute -inset-px rounded-lg border-2" aria-hidden="true" :class="{ 'border border-indigo-500': (deliveryMethod === 'Standard'), 'border-2 border-transparent': !(deliveryMethod === 'Standard') }"></span>
                                 </label>
 
-                                <label x-radio-group-option="" class="relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none border-gray-300 undefined" x-description="Checked: &quot;border-transparent&quot;, Not Checked: &quot;border-gray-300&quot;	Active: &quot;ring-2 ring-indigo-500&quot;" :class="{ 'border-transparent': (value === 'Express'), 'border-gray-300': !(value === 'Express'), 'ring-2 ring-indigo-500': (active === 'Express'), 'undefined': !(active === 'Express') }">
-                                    <input type="radio" x-model="value" name="delivery-method" value="Express" class="sr-only" aria-labelledby="delivery-method-1-label" aria-describedby="delivery-method-1-description-0 delivery-method-1-description-1">
+                                <label  class="relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none border-gray-300 undefined" @click="deliveryMethod = 'Express'">
                                     <span class="flex flex-1">
                                         <span class="flex flex-col">
                                           <span id="delivery-method-1-label" class="block text-sm font-medium text-gray-900">Express</span>
@@ -205,10 +203,10 @@
                                           <span id="delivery-method-1-description-1" class="mt-6 text-sm font-medium text-gray-900">$16.00</span>
                                         </span>
                                       </span>
-                                    <svg class="h-5 w-5 text-indigo-600 hidden" x-description="Not Checked: &quot;hidden&quot;" :class="{ 'hidden': !(value === 'Express'), 'undefined': (value === 'Express') }" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                       <svg class="h-5 w-5 text-indigo-600" :class="{ 'hidden': (deliveryMethod === 'Standard'), 'undefined': !(deliveryMethod === 'Standard') }" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"></path>
                                     </svg>
-                                    <span class="pointer-events-none absolute -inset-px rounded-lg border-2 border-transparent" aria-hidden="true" x-description="Active: &quot;border&quot;, Not Active: &quot;border-2&quot;	Checked: &quot;border-indigo-500&quot;, Not Checked: &quot;border-transparent&quot;" :class="{ 'border': (active === 'Express'), 'border-2': !(active === 'Express'), 'border-indigo-500': (value === 'Express'), 'border-transparent': !(value === 'Express') }"></span>
+                                    <span class="pointer-events-none absolute -inset-px rounded-lg border-2" aria-hidden="true" :class="{ 'border border-indigo-500': !(deliveryMethod === 'Standard'), 'border-2 border-transparent': (deliveryMethod === 'Standard') }"></span>
                                 </label>
 
                             </div>
@@ -296,19 +294,19 @@
                         <dl class="space-y-6 border-t border-gray-200 py-6 px-4 sm:px-6">
                             <div class="flex items-center justify-between">
                                 <dt class="text-sm">Subtotal</dt>
-                                <dd class="text-sm font-medium text-gray-900">$64.00</dd>
+                                <dd class="text-sm font-medium text-gray-900">${{ subTotal }}</dd>
                             </div>
                             <div class="flex items-center justify-between">
                                 <dt class="text-sm">Shipping</dt>
-                                <dd class="text-sm font-medium text-gray-900">$5.00</dd>
+                                <dd class="text-sm font-medium text-gray-900">${{ shipping_estimate }}</dd>
                             </div>
                             <div class="flex items-center justify-between">
                                 <dt class="text-sm">Taxes</dt>
-                                <dd class="text-sm font-medium text-gray-900">$5.52</dd>
+                                <dd class="text-sm font-medium text-gray-900">${{ tax_estimate }}</dd>
                             </div>
                             <div class="flex items-center justify-between border-t border-gray-200 pt-6">
                                 <dt class="text-base font-medium">Total</dt>
-                                <dd class="text-base font-medium text-gray-900">$75.52</dd>
+                                <dd class="text-base font-medium text-gray-900">${{ orderTotal }}</dd>
                             </div>
                         </dl>
 
@@ -330,15 +328,40 @@
 
 <script setup>
 import { loadStripe } from '@stripe/stripe-js';
-import {reactive, onMounted, computed} from "vue";
+import {reactive, onMounted, computed, ref} from "vue";
 import { useCartStore } from "../../Store/cart";
 import axios from "axios";
+import router from "../../Router/index";
 
 const store = useCartStore();
+const deliveryMethod = ref("Standard");
+const deliveryMethods = {
+    Standard: 5.00,
+    Express: 16.00,
+}
+
 
 const cartItems = computed(() => {
     return store.getCartContents;
 });
+
+const subTotal = computed(() => {
+    return  store.getCartContents.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2);
+
+});
+const tax_estimate = computed(() => {
+    return  (subTotal.value  * 0.1).toFixed(2);
+
+});
+
+const shipping_estimate = computed(() => {
+    return  (deliveryMethods[deliveryMethod.value]).toFixed(2);
+});
+
+const orderTotal = computed(() => {
+    return (Number(subTotal.value) + Number(tax_estimate.value) + Number(shipping_estimate.value)).toFixed(2);
+});
+
 
 const cartItemOptions = [1, 2, 3, 4, 5, 6, 7, 8];
 
@@ -364,10 +387,16 @@ const formData = reactive({
     city: "",
     state: "",
     email: "",
-    phone: "",
+    phone: ""
 });
 
 onMounted(async () => {
+
+    if(!cartItems.value.length) {
+        router.push("/cart");
+        return;
+    }
+
     localState.stripe = await loadStripe(import.meta.env.VITE_STRIPE_KEY);
     const stripeElements = localState.stripe.elements();
     localState.cardElement = stripeElements.create("card", {
@@ -380,6 +409,7 @@ onMounted(async () => {
 });
 
 const processPayment = async () => {
+
     store.updateCustomer(formData);
     localState.paymentProcessing = true;
 
@@ -413,33 +443,33 @@ const processPayment = async () => {
     if (error || !paymentMethod.id) {
         localState.paymentProcessing = false;
         localState.orderError = error;
-        alert(error);
+        console.log(error)
+        alert(error.message);
         return;
     }
-
-    // const stripeAmount = store.getCartTotal * 100;
-    const stripeAmount = 10000;
 
     const finalCustomerDetails = {
         ...store.getCustomer,
         cart: JSON.stringify(store.getCartContents),
-        amount: stripeAmount,
         payment_method_id: paymentMethod.id,
+        delivery_method: deliveryMethod.value,
+        total_amount: orderTotal.value
     };
 
     axios
         .post("/api/payment", finalCustomerDetails)
         .then((response) => {
-            if (response.statusText === "Created") {
-                localState.paymentIsProcessing = false;
+            console.log(response);
+            if (response.status === 200 && response.data.message === "success") {
+                localState.paymentProcessing = false;
                 store.clearCart();
                 store.clearCustomer();
                 store.updateOrder(paymentMethod.id);
-                this.$router.push("/success");
+                router.push("/success");
             }
         })
         .catch((error) => {
-            localState.paymentIsProcessing = false;
+            localState.paymentProcessing = false;
             localState.orderError = error;
             alert(error);
         });

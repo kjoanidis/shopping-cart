@@ -23,9 +23,11 @@ export const useCartStore = defineStore({
                 this.error = error;
             }
         },
-        addToCart({ item }) {
+        addToCart({ product }) {
+            console.log(product)
+            const item = product.skus[0];
             const foundProductInCartIndex = this.cart.findIndex(
-                (cartItem) => item.slug === cartItem.slug
+                (cartItem) => item.id === cartItem.id
             );
 
             if (foundProductInCartIndex > -1) {

@@ -1,8 +1,10 @@
 <template>
     <main class="mx-auto max-w-2xl px-4 pt-16 pb-24 sm:px-6 lg:max-w-7xl lg:px-8">
         <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Shopping Cart</h1>
+        <div v-if="!cartItems.length" class="mt-12 ">Your Cart is empty</div>
 
         <form
+            v-if="cartItems.length"
             @submit.prevent
             class="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16"
         >
@@ -16,6 +18,7 @@
                         :key="cartItem.id"
                         class="flex py-6 sm:py-10"
                     >
+
                         <div class="flex-shrink-0">
                             <img src="https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-01.jpg" alt="Front of men's Basic Tee in sienna." class="h-24 w-24 rounded-md object-cover object-center sm:h-48 sm:w-48">
                         </div>
@@ -33,7 +36,7 @@
 
                                         <p class="ml-4 border-l border-gray-200 pl-4 text-gray-500">Large</p>
                                     </div>
-                                    <p class="mt-1 text-sm font-medium text-gray-900">$32.00</p>
+                                    <p class="mt-1 text-sm font-medium text-gray-900">${{ cartItem.price.toFixed(2) }}</p>
                                 </div>
 
                                 <div class="mt-4 sm:mt-0 sm:pr-9">
@@ -85,7 +88,7 @@
                 <dl class="mt-6 space-y-4">
                     <div class="flex items-center justify-between">
                         <dt class="text-sm text-gray-600">Subtotal</dt>
-                        <dd class="text-sm font-medium text-gray-900">$99.00</dd>
+                        <dd class="text-sm font-medium text-gray-900">${{subTotal}}</dd>
                     </div>
                     <div class="flex items-center justify-between border-t border-gray-200 pt-4">
                         <dt class="flex items-center text-sm text-gray-600">
@@ -97,7 +100,7 @@
                                 </svg>
                             </a>
                         </dt>
-                        <dd class="text-sm font-medium text-gray-900">$5.00</dd>
+                        <dd class="text-sm font-medium text-gray-900">${{ shipping_estimate }}</dd>
                     </div>
                     <div class="flex items-center justify-between border-t border-gray-200 pt-4">
                         <dt class="flex text-sm text-gray-600">
@@ -109,11 +112,11 @@
                                 </svg>
                             </a>
                         </dt>
-                        <dd class="text-sm font-medium text-gray-900">$8.32</dd>
+                        <dd class="text-sm font-medium text-gray-900">${{ tax_estimate }}</dd>
                     </div>
                     <div class="flex items-center justify-between border-t border-gray-200 pt-4">
                         <dt class="text-base font-medium text-gray-900">Order total</dt>
-                        <dd class="text-base font-medium text-gray-900">$112.32</dd>
+                        <dd class="text-base font-medium text-gray-900">${{ orderTotal }}</dd>
                     </div>
                 </dl>
 
@@ -131,14 +134,34 @@
 
 <script setup>
 import {useCartStore} from "../../Store/cart";
-import { computed } from "vue";
+import { computed, watch  } from "vue";
 import router from "../../Router/index";
 
 const store = useCartStore();
+
+const cartItemOptions = [1, 2, 3, 4, 5, 6, 7, 8];
+
 const cartItems = computed(() => {
     return store.getCartContents;
 });
-const cartItemOptions = [1, 2, 3, 4, 5, 6, 7, 8];
+
+const subTotal = computed(() => {
+    return  store.getCartContents.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2);
+
+});
+const tax_estimate = computed(() => {
+    return  (subTotal.value  * 0.1).toFixed(2);
+
+});
+
+const shipping_estimate = computed(() => {
+    return  (5).toFixed(2);
+});
+
+const orderTotal = computed(() => {
+    return (Number(subTotal.value) + Number(tax_estimate.value) + Number(shipping_estimate.value)).toFixed(2);
+});
+
 
 function checkout() {
     router.push("/checkout")

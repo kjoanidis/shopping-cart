@@ -26,6 +26,7 @@ class SkuResource extends JsonResource
                 return $this->pivot->value;
             }),
             'packages' => $this->packageSkus,
+            'p1ackages' => true,
             'quantity' => $this->whenPivotLoaded('package_sku', function () {
                return $this->pivot->quantity;
             }),

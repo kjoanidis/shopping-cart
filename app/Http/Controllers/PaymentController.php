@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Sku;
+use App\Models\Order;
+use App\Models\OrderSku;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -10,6 +13,7 @@ class PaymentController extends Controller
 {
     public function store(Request $request)
     {
+
         $user = User::firstOrCreate(
             [
                 'email' => $request->input('email')
@@ -25,30 +29,97 @@ class PaymentController extends Controller
         );
 
         try {
-            $payment = $user->charge(
-                $request->input('amount'),
-                $request->input('payment_method_id')
-            );
 
-            $payment = $payment->asStripePaymentIntent();
+            $products = json_decode($request->input('cart'), true);
+            $shipping_amount = $request->input('delivery_method') === "Standard" ? 500 : 1600;
 
-            $order = $user->orders()
-                ->create([
-                    'transaction_id' => $payment->charges->data[0]->id,
-                    'total' => $payment->charges->data[0]->amount
-                ]);
+              // Transaction History
+              $order_recoard = [
+                'user_id' => $user->id,
+                'total' => $request->input('total_amount'),
+                'last_four' => $user->pm_last_four,
+                'card_type' => ucwords($user->pm_type),
+            ];
 
-            foreach (json_decode($request->input('cart'), true) as $item) {
-                $order->skus()
-                    ->attach($item['id'], ['quantity' => $item['quantity']]);
+            $order = new Order();
+            $order_id = $order->create($order_recoard)->id;
+
+
+
+
+            foreach($products as $key => $product) {
+
+                $item = Sku::find($product['id']);
+                $stripe_price_id = $item->stripe_price_id;
+                $subscription_name = $item->name;
+                $quantity = $product['quantity'];
+
+
+                if($item->is_subscription) {
+                    $subscription = $user->newSubscription($subscription_name, $stripe_price_id)
+                        ->quantity($quantity)
+                        ->create($request->input('payment_method_id'),[],[
+                            'payment_behavior' => 'error_if_incomplete',
+                    ]);
+                    $payment_id = $subscription->latestPayment()->id;
+                } else {
+
+                    // if you want to use products in stripe
+                    // $result = $user->invoicePrice($stripe_price_id,  $quantity);
+                    // $payment_id = $result->payment_intent;
+
+                    // if you want to use products in local DB
+                    $payment = $user->charge(
+                        100 * $item->price * $quantity,
+                        $request->input('payment_method_id')
+                    );
+                    $payment_id = $payment->id;
+                }
+
+
+                // Transaction History
+                $order_sku_record = [
+                    'payment_id' => $payment_id,//transaction_id
+                    'order_id' => $order_id,
+                    'sku_id' => $product['id'],
+                    'quantity' => $quantity,
+                    'status' => 'Success',
+                    'last_four' => $user->pm_last_four,
+                    'card_type' => ucwords($user->pm_type),
+                ];
+
+                $order = new OrderSku();
+                $order->create($order_sku_record);
+
             }
 
-            $order->load('skus');
-            return $order;
+
+            // Shipping amount
+            $payment = $user->charge(
+                $shipping_amount,
+                $request->input('payment_method_id')
+            );
+            $payment_id = $payment->id;
+
+              // Transaction History
+              $order_sku_record = [
+                'payment_id' => $payment_id,
+                'order_id' => $order_id,
+                'sku_id' => 0,
+                'quantity' => $quantity,
+                'status' => 'Success',
+                'last_four' => $user->pm_last_four,
+                'card_type' => ucwords($user->pm_type),
+            ];
+
+            $order = new OrderSku();
+            $order->create($order_sku_record);
+
+
+            return response()->json(['message' => "success"], 200);
 
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
-
     }
 }

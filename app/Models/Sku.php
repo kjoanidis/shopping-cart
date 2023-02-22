@@ -20,9 +20,15 @@ class Sku extends Model
         'name'
     ];
 
+    protected $hidden = [
+        'product',
+        'stripe_price_id'
+    ];
+
     protected $with = ['packageSkus'];
 
-    protected $appends = ['is_package'];
+    protected $appends = ['is_package', 'is_subscription'];
+
 
     public function attributes(): BelongsToMany
     {
@@ -42,5 +48,9 @@ class Sku extends Model
     public function getIsPackageAttribute(): bool
     {
         return !! $this->packageSkus->count();
+    }
+    public function getIsSubscriptionAttribute(): bool
+    {
+        return  $this->product->category->slug == 'subscriptions';
     }
 }
