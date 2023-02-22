@@ -32,20 +32,19 @@ class PaymentController extends Controller
 
             $products = json_decode($request->input('cart'), true);
             $shipping_amount = $request->input('delivery_method') === "Standard" ? 500 : 1600;
+            $payment_method_id = $request->input('payment_method_id');
 
-              // Transaction History
-              $order_recoard = [
+
+            // Transaction History
+            $order_recoard = [
                 'user_id' => $user->id,
                 'total' => $request->input('total_amount'),
-                'last_four' => $user->pm_last_four,
-                'card_type' => ucwords($user->pm_type),
+                // 'last_four' => $user->pm_last_four,
+                // 'card_type' => $user->pm_type,
             ];
 
             $order = new Order();
             $order_id = $order->create($order_recoard)->id;
-
-
-
 
             foreach($products as $key => $product) {
 
@@ -58,7 +57,7 @@ class PaymentController extends Controller
                 if($item->is_subscription) {
                     $subscription = $user->newSubscription($subscription_name, $stripe_price_id)
                         ->quantity($quantity)
-                        ->create($request->input('payment_method_id'),[],[
+                        ->create($payment_method_id,[],[
                             'payment_behavior' => 'error_if_incomplete',
                     ]);
                     $payment_id = $subscription->latestPayment()->id;
@@ -71,45 +70,47 @@ class PaymentController extends Controller
                     // if you want to use products in local DB
                     $payment = $user->charge(
                         100 * $item->price * $quantity,
-                        $request->input('payment_method_id')
+                        $payment_method_id,
+                        [
+                            'setup_future_usage'=> 'off_session'
+                        ]
                     );
                     $payment_id = $payment->id;
                 }
 
-
                 // Transaction History
+
                 $order_sku_record = [
                     'payment_id' => $payment_id,//transaction_id
                     'order_id' => $order_id,
                     'sku_id' => $product['id'],
                     'quantity' => $quantity,
                     'status' => 'Success',
-                    'last_four' => $user->pm_last_four,
-                    'card_type' => ucwords($user->pm_type),
                 ];
 
                 $order = new OrderSku();
                 $order->create($order_sku_record);
-
             }
 
 
             // Shipping amount
+
             $payment = $user->charge(
                 $shipping_amount,
-                $request->input('payment_method_id')
+                $payment_method_id,
+                [
+                    'setup_future_usage'=> 'off_session'
+                ]
             );
             $payment_id = $payment->id;
 
-              // Transaction History
-              $order_sku_record = [
+            // Transaction History
+            $order_sku_record = [
                 'payment_id' => $payment_id,
                 'order_id' => $order_id,
                 'sku_id' => 0,
                 'quantity' => $quantity,
                 'status' => 'Success',
-                'last_four' => $user->pm_last_four,
-                'card_type' => ucwords($user->pm_type),
             ];
 
             $order = new OrderSku();
