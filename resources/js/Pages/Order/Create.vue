@@ -465,7 +465,7 @@ const processPayment = async () => {
                 store.clearCart();
                 store.clearCustomer();
                 store.updateOrder(paymentMethod.id);
-                router.push("/success");
+                router.push({ name: 'order.show' });
             }
         })
         .catch((error) => {
