@@ -164,7 +164,7 @@ const orderTotal = computed(() => {
 
 
 function checkout() {
-    router.push("/checkout")
+    router.push({ name: 'order.create' })
 }
 
 function updateCartItemQuantity(cartItem, event) {

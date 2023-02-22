@@ -1,10 +1,10 @@
-import {createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import Home from "../Pages/Home.vue";
 import ProductShow from "../Pages/Product/Show.vue"
 import CartEdit from "../Pages/Cart/Edit.vue"
 import CategoryShow from "../Pages/Category/Show.vue"
 import OrderCreate from "../Pages/Order/Create.vue"
-import OrderShow from "../Pages/Order/Create.vue"
+import OrderShow from "../Pages/Order/Show.vue"
 
 const routes = [
     {
@@ -14,7 +14,7 @@ const routes = [
     },
     {
         path: "/cart",
-        name: "cart",
+        name: "cart.show",
         component: CartEdit,
     },
     {
@@ -28,12 +28,12 @@ const routes = [
         component: CategoryShow,
     },
     {
-        path: "/checkout",
+        path: "/order/checkout",
         name: "order.create",
         component: OrderCreate,
     },
     {
-        path: "/confirmation",
+        path: "/order/summary",
         name: "order.show",
         component: OrderShow,
     },
